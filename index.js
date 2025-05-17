@@ -8,10 +8,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Endpoint de login do admin
+// Rota de login de admin
 app.post("/adminLogin", adminLogin);
 
-// Página padrão
+// Rota padrão (GET /)
 app.get("/", (req, res) => {
   res.send("FREEGOAT backend rodando com Express na porta dinâmica!");
 });
