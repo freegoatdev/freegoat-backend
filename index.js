@@ -1,36 +1,24 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { verifyWalletSignature } = require('./adminLogin');
 
+const express = require("express");
+const cors = require("cors");
 const app = express();
+const port = process.env.PORT || 3000;
+
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.post('/admin/login', async (req, res) => {
-  const { wallet, signature, message } = req.body;
-
-  if (!wallet || !signature || !message) {
-    return res.status(400).json({ error: 'Parâmetros ausentes.' });
-  }
-
-  const isValid = await verifyWalletSignature(wallet, signature, message);
-
-  if (!isValid) {
-    return res.status(401).json({ error: 'Assinatura inválida.' });
-  }
-
-  const adminWallets = ['SuaCarteiraAdminAqui']; // Substituir com a carteira do admin
-  const isAdmin = adminWallets.includes(wallet);
-
-  if (!isAdmin) {
-    return res.status(403).json({ error: 'Acesso não autorizado.' });
-  }
-
-  res.json({ success: true, wallet });
+app.get("/", (req, res) => {
+  res.send("FREEGOAT backend rodando com Express na porta dinâmica!");
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+app.post("/adminLogin", (req, res) => {
+  const { signature } = req.body;
+  if (signature === "assinatura.valida") {
+    return res.status(200).json({ success: true });
+  }
+  return res.status(401).json({ success: false });
+});
+
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });

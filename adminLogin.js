@@ -1,17 +1,9 @@
-const nacl = require('tweetnacl');
-const bs58 = require('bs58');
 
-function verifyWalletSignature(walletAddress, signature, message) {
-  try {
-    const messageBytes = new TextEncoder().encode(message);
-    const signatureBytes = bs58.decode(signature);
-    const publicKeyBytes = bs58.decode(walletAddress);
-
-    return nacl.sign.detached.verify(messageBytes, signatureBytes, publicKeyBytes);
-  } catch (error) {
-    console.error('Erro ao verificar assinatura:', error);
-    return false;
+// Este é um exemplo simples. A lógica real depende da assinatura da carteira.
+module.exports = (req, res) => {
+  const { signature } = req.body;
+  if (signature === "assinatura.valida") {
+    return res.status(200).json({ success: true });
   }
-}
-
-module.exports = { verifyWalletSignature };
+  return res.status(401).json({ success: false });
+};
