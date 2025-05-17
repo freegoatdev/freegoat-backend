@@ -1,24 +1,21 @@
-
 const express = require("express");
 const cors = require("cors");
+const adminLogin = require("./adminLogin");
+
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
+// Endpoint de login do admin
+app.post("/adminLogin", adminLogin);
+
+// Página padrão
 app.get("/", (req, res) => {
   res.send("FREEGOAT backend rodando com Express na porta dinâmica!");
 });
 
-app.post("/adminLogin", (req, res) => {
-  const { signature } = req.body;
-  if (signature === "assinatura.valida") {
-    return res.status(200).json({ success: true });
-  }
-  return res.status(401).json({ success: false });
-});
-
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
